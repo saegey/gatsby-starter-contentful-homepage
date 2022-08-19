@@ -1,6 +1,6 @@
 export const colors = {
-  background: "#ffd500",
-  text: "#005bbb",
+  background: "#fff",
+  text: "#000",
   primary: "#005bbb",
   muted: "#f5cc00",
   active: "#004287",
