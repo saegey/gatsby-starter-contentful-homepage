@@ -13,26 +13,49 @@ function AboutStat(props) {
 }
 
 export default function AboutStatList(props) {
+  // const props = props
+  const routeStats = {
+    value: "allContentfulRide",
+    label: "Number of routes",
+  }
   return (
     <Section>
       <Container>
         <FlexList className={styles.statList} variant="center" responsive>
-          {props.content.map((stat) => (
-            <AboutStat key={stat.id} {...stat} />
-          ))}
+          <AboutStat key={"founded"} label={"Year Founded"} value="2022" />
+          <AboutStat
+            key={"test"}
+            label={"Number of routes"}
+            value={props.activeRoute.length}
+          />
+          <AboutStat
+            key={"test"}
+            label={"Total Distance"}
+            value={props.activeRoute.reduce(
+              (sum, item) => sum + item.distance,
+              0
+            )}
+          />
+          <AboutStat
+            key={"test"}
+            label={"Total Elevation"}
+            value={props.activeRoute.reduce(
+              (sum, item) => sum + item.elevationGain,
+              0
+            )}
+          />
         </FlexList>
+        {/* {JSON.stringify(props)} */}
       </Container>
     </Section>
   )
 }
 
 export const query = graphql`
-  fragment AboutStatListContent on AboutStatList {
-    id
-    content {
-      id
-      value
-      label
+  fragment StatsContent on ContentfulAbout {
+    activeRoute {
+      distance
+      elevationGain
     }
   }
 `

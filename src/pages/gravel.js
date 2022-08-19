@@ -21,7 +21,7 @@ export default function Training(props) {
 
 export const query = graphql`
   {
-    contentfulRoutesPage(type: { eq: "training" }) {
+    contentfulRoutesPage(type: { eq: "gravel" }) {
       id
       title
       blocks: routes {

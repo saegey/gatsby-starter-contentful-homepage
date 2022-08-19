@@ -1,53 +1,18 @@
 import * as React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/layout"
-import {
-  Container,
-  Box,
-  Heading,
-  FlexList,
-  Icon,
-  Text,
-  Space,
-  Link,
-  BlockLink,
-} from "../components/ui"
-
-function Route(props) {
-  return (
-    <Box as="li" width="third" padding={4} paddingY={3}>
-      {props.photos[0] && (
-        <Icon
-          alt={props.photos[0].alt}
-          image={props.photos[0].gatsbyImageData}
-          size="large"
-        />
-      )}
-      <Space size={2} />
-      {/* <Heading variant="subheadSmall">{props.title}</Heading> */}
-      <BlockLink {...props} to={`/routes/${props.id}`}>
-        {props.title}
-      </BlockLink>
-    </Box>
-  )
-}
+import { Container, Box, Heading } from "../components/ui"
+import RoutesList from "../components/routes-list"
 
 export default function Training(props) {
-  const { contentfulTrainingRoutesPage } = props.data
+  const { contentfulRoutesPage } = props.data
 
   return (
-    <Layout {...contentfulTrainingRoutesPage}>
+    <Layout {...contentfulRoutesPage}>
       <Box paddingY={5}>
         <Container width="narrow">
-          <Heading as="h1">{contentfulTrainingRoutesPage.title}</Heading>
-          <FlexList gutter={3} variant="start" responsive wrap>
-            {contentfulTrainingRoutesPage.blocks.map((route) => (
-              // <p key={route.id} {...route}>
-              //   {route.title}
-              // </p>
-              <Route key={route.id} {...route} />
-            ))}
-          </FlexList>
+          <Heading as="h1">{contentfulRoutesPage.title}</Heading>
+          <RoutesList routes={contentfulRoutesPage.blocks} />
         </Container>
       </Box>
     </Layout>
@@ -56,7 +21,7 @@ export default function Training(props) {
 
 export const query = graphql`
   {
-    contentfulTrainingRoutesPage(title: { eq: "Epics" }) {
+    contentfulRoutesPage(type: { eq: "epics" }) {
       id
       title
       blocks: routes {
@@ -67,9 +32,9 @@ export const query = graphql`
           url
           gatsbyImageData
         }
+        elevationGain
+        distance
       }
     }
   }
 `
-
-// export default Training

@@ -1,6 +1,7 @@
 import * as React from "react"
 import { graphql } from "gatsby"
 import Layout from "../../components/layout"
+import RWGPSEmbed from "../../components/rwgps-embed"
 import {
   Container,
   Box,
@@ -8,27 +9,13 @@ import {
   Link,
   Space,
   FlexList,
+  Section,
 } from "../../components/ui"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
 import { INLINES, BLOCKS, MARKS, PARAGRAPH } from "@contentful/rich-text-types"
-
-function RWGPSEmbed(props) {
-  const routeId = props.url.split("/")[4]
-  const embedUrl = `https://ridewithgps.com/embeds?type=route&id=${routeId}&sampleGraph=true`
-  // return embedUrl
-  return (
-    <iframe
-      src={embedUrl}
-      style={{
-        width: "1px",
-        "min-width": "100%",
-        height: "700px",
-        border: "none",
-      }}
-      scrolling="no"
-    ></iframe>
-  )
-}
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import RideHero from "../../components/ride-hero"
+import RideStats from "../../components/ride-stats"
 
 const Bold = ({ children }) => <span className="bold">{children}</span>
 const Text = ({ children }) => <p className="align-center">{children}</p>
@@ -57,30 +44,18 @@ export default function Page(props) {
 
   return (
     <Layout {...contentfulRide}>
-      <Box paddingY={5}>
-        <Container width="narrow">
+      <RideHero {...contentfulRide} />
+      <Section>
+        <Container width="normal">
           <Heading as="h1">{contentfulRide.title}</Heading>
           <Space size={5} />
           <div>{renderRichText(contentfulRide.description, options)}</div>
           <Space size={5} />
-          <FlexList variant="left" responsive>
-            <Box width="fitContent">
-              <Text variant="stat">{contentfulRide.type}</Text>
-              <Text variant="statLabel">Type</Text>
-            </Box>
-            <Box width="fitContent">
-              <Text variant="stat">{contentfulRide.elevationGain} feet</Text>
-              <Text variant="statLabel">Elevation Gain</Text>
-            </Box>
-            <Box width="fitContent">
-              <Text variant="stat">{contentfulRide.routeFormat}</Text>
-              <Text variant="statLabel">format</Text>
-            </Box>
-          </FlexList>
+          <RideStats {...contentfulRide} />
           <Space size={5} />
           <RWGPSEmbed url={contentfulRide.sourceUrl} />
         </Container>
-      </Box>
+      </Section>
     </Layout>
   )
 }
@@ -93,9 +68,18 @@ export const query = graphql`
       elevationGain
       type
       routeFormat
+      tires
       distance
+      surfaceBreakdown
       description {
         raw
+      }
+      photos {
+        url
+        gatsbyImageData
+      }
+      featuredPhoto {
+        gatsbyImageData
       }
     }
   }
